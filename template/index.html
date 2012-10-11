@@ -1,0 +1,100 @@
+{{define "index"}}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+            @import url("lib/bootstrap/css/bootstrap-responsive.min.css");
+            @import url("lib/bootstrap/css/bootstrap.min.css");
+            @import url("css/common.css");
+            @import url("css/index.css");
+        </style>
+        <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+
+        <div class="span4"></div>
+        <div id="content" class="well container-fluid span8">
+            <h1>Create Twitter View</h1>
+            <p>
+                Open given URL with twitter view which show tweets filtered by given keys using Twitter Streaming API.
+            </p>
+            <form class="form-horizontal" action="/create">
+
+                <legend>Twitter Account</legend>
+                <span class="help-block">
+                    Setting for twitter account using for Twitter Streaming API.
+                </span>
+
+                <div class="control-group">
+                        <!-- Login ID -->
+                        <label class="control-label" for="login">
+                            Login
+                        </label>
+                        <div class="controls">
+                           <input
+                               id="login"
+                               name="login"
+                               type="text"
+                               placeholder="Twitter ID"
+                               required/>
+                        </div>
+                </div>
+
+                <div class="control-group">
+                        <!-- Password -->
+                        <label class="control-label" for="password">
+                            Password
+                        </label>
+                        <div class="controls">
+                           <input
+                               id="password"
+                               name="password"
+                               type="password"
+                               placeholder="Password"
+                               required/>
+                        </div>
+
+                </div>
+
+                <legend>View Setting</legend>
+                <span class="help-block">
+                    Setting for URL of a website to show and keywords using filtering of tweets. 
+                </span>
+
+                <!-- URL -->
+                <div class="control-group">
+                    <label class="control-label" for="targetURL">URL</label>
+                    <div class="controls">
+                        <input
+                            id="targetURL"
+                            name="url"
+                            type="url"
+                            placeholder="http://xxxx.xxxx.xx"
+                            required/>
+                    </div>
+                </div>
+
+                <!-- Keywords -->
+                <div class="control-group">
+                    <label class="control-label" for="keywords">Keywords</label>
+                    <div class="controls">
+                        <input
+                            id="keywords"
+                            name="keywords"
+                            type="text"
+                            placeholder="twitter, golang"/>
+                    </div>
+                </div>
+
+                <!-- View button -->
+                <div class="control-group">
+                    <div class="controls pull-right">
+                        <button type="submit" class="btn btn-primary btn-large">View</button>
+                    </div>
+                </div>
+            </form>
+        </div> 
+    </body>
+</html>
+{{end}}
