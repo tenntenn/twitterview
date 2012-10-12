@@ -3,22 +3,73 @@
     <head>
         <meta charset="UTF-8" />
         <style>
-            @import url("../lib/bootstrap/css/bootstrap-responsive.min.css");
-            @import url("../lib/bootstrap/css/bootstrap.min.css");
-            @import url("../css/common.css");
+            @import url("lib/bootstrap/css/bootstrap-responsive.min.css");
+            @import url("lib/bootstrap/css/bootstrap.min.css");
+            @import url("css/common.css");
 
-            #viewFrame {
-                width:1000px;
-                height:1000px;
-            }
         </style>
-        <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../lib/pdf.js"></script>
+        <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="lib/pdf.js"></script>
+        <script src="lib/jquery-1.8.2.min.js"></script>
+        <script>
+            PDFJS.workerSrc = "lib/pdf.js";
+            (function() {
+            var showPDF = function(pdf, pageNum) {
+                // Using promise to fetch the page
+                pdf.getPage(pageNum).then(function(page) {
+                    var scale = 1;
+                    var viewport = page.getViewport(scale);
+
+                    var canvas = document.getElementById('the-canvas');
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+                    
+            };
+            PDFJS.getDocument('hoge.pdf').then(function(pdf) {
+                var pageNum = 1;
+                showPDF(pdf, pageNum);
+                $(function(){
+                $('html').bind('keyup', function(e){
+                   switch(e.which){
+                    case 39:
+                        // ->
+                        pageNum++;
+                        if (pdf.pdfInfo.numPages < pageNum) {
+                            pageNum = pdf.pdfInfo.numPages;
+                        }
+                        showPDF(pdf, pageNum);        
+                    break;
+                    case 37:
+                        // <-
+                        pageNum--;
+                        if (pageNum <= 0) {
+                            pageNum = 1;
+                        }
+                        showPDF(pdf, pageNum);        
+                    break;
+                    }
+                });
+                });
+             });
+            })();
+
+       </script>
      </head>
     <body>
 
-        <div class="container well">
-            
-       </div>
+        <div class="row-fluid">
+            <canvas id="the-canvas" class="well span10">
+            </canvas>
+            <div class="span2">
+            </div>
+         </div>
     </body>
 </html>
