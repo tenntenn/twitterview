@@ -46,10 +46,10 @@ func create(w http.ResponseWriter, r *http.Request) {
 var mux = http.NewServeMux()
 
 func main() {
-    mux.Handle("/css/.+", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
-    mux.Handle("/js/.+", http.StripPrefix("/js/", http.FileServer(http.Dir("js"))))
-    mux.Handle("/lib/.+", http.StripPrefix("/lib/", http.FileServer(http.Dir("lib"))))
-    mux.Handle("/pdf/.+", http.StripPrefix("/pdf/", http.FileServer(http.Dir("pdf"))))
+    mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
+    mux.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js"))))
+    mux.Handle("/lib/", http.StripPrefix("/lib/", http.FileServer(http.Dir("lib"))))
+    mux.Handle("/pdf/", http.StripPrefix("/pdf/", http.FileServer(http.Dir("pdf"))))
     mux.HandleFunc("/create", create)
     mux.HandleFunc("/", index)
     http.ListenAndServe(":9000", mux)
