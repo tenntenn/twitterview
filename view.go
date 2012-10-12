@@ -22,7 +22,7 @@ func NewView(seed string) *View {
 
     h := sha1.New()
     io.WriteString(h, seed)
-    id := base64.StdEncoding.EncodeToString(h.Sum(nil))
+    id := base64.URLEncoding.EncodeToString(h.Sum(nil))
 
     tweet := make(chan *httpstream.Tweet)
     regist := make(chan *websocket.Conn)

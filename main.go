@@ -39,6 +39,7 @@ func create(w http.ResponseWriter, r *http.Request) {
     io.Copy(pdfFile, file)
 
     // redirect view
+    view.Start()
     viewPath := fmt.Sprintf("/view/%s/show", view.Id)
     http.Redirect(w, r, viewPath, http.StatusFound)
 }
