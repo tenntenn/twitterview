@@ -17,9 +17,13 @@
         <div id="content" class="well container-fluid span8">
             <h1>Create Twitter View</h1>
             <p>
-                Open given URL with twitter view which show tweets filtered by given keys using Twitter Streaming API.
+                Open given pdf file with twitter view which show tweets filtered by given keys using Twitter Streaming API.
             </p>
-            <form class="form-horizontal" action="/create">
+            <form
+                class="form-horizontal"
+                method="post"
+                action="/create"
+                enctype="multipart/form-data">
 
                 <legend>Twitter Account</legend>
                 <span class="help-block">
@@ -59,18 +63,17 @@
 
                 <legend>View Setting</legend>
                 <span class="help-block">
-                    Setting for URL of a website to show and keywords using filtering of tweets. 
+                    Uploading for a pdf file to show and setting keywords using filtering of tweets. 
                 </span>
 
                 <!-- URL -->
                 <div class="control-group">
-                    <label class="control-label" for="targetURL">URL</label>
+                    <label class="control-label" for="targetURL">PDF file</label>
                     <div class="controls">
                         <input
-                            id="targetURL"
-                            name="url"
-                            type="url"
-                            placeholder="http://xxxx.xxxx.xx"
+                            id="pdf"
+                            name="pdf"
+                            type="file"
                             required/>
                     </div>
                 </div>

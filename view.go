@@ -4,25 +4,38 @@ import (
     "net/http"
     "code.google.com/p/go.net/websocket"
     "github.com/araddon/httpstream"
-    "net/url"
+    "io"
+    "crypto/sha1"
+    "encoding/base64"
+    "fmt"
 )
 
 type View struct {
+    Id string
     tweet chan *httpstream.Tweet
     regist chan *websocket.Conn
     done chan bool
-    stop func(w http.ResponseWriter, r *http.Request)
-    onConnected func(ws *websocket.Conn)
     conns []*websocket.Conn
-    URL *url.URL
 }
 
-func NewView(url *url.URL) *View {
+func NewView(seed string) *View {
+
+    h := sha1.New()
+    io.WriteString(h, seed)
+    id := base64.StdEncoding.EncodeToString(h.Sum(nil))
 
     tweet := make(chan *httpstream.Tweet)
     regist := make(chan *websocket.Conn)
     done := make(chan bool)
     conns := make([]*websocket.Conn, 0, 1000)
+
+    view := &View{
+        id,
+        tweet,
+        regist,
+        done,
+        conns,
+    }
 
     stop := func(w http.ResponseWriter, r *http.Request) {
         done <- true
@@ -32,16 +45,15 @@ func NewView(url *url.URL) *View {
         regist <- ws
     }
 
-    view := &View{
-        tweet,
-        regist,
-        done,
-        stop,
-        onConnected,
-        conns,
-        url,
+    show := func(w http.ResponseWriter, r *http.Request) {
+        templates.ExecuteTemplate(w, "view", view)
     }
-    return view
+
+    mux.Handle(fmt.Sprintf("/view/%s/ws", id), websocket.Handler(onConnected))
+    mux.HandleFunc(fmt.Sprintf("/view/%s/stop", id), show)
+    mux.HandleFunc(fmt.Sprintf("/view/%s/show", id), stop)
+
+   return view
 }
 
 func (view *View) Start() {

@@ -10,9 +10,41 @@
         </style>
         <script src="lib/bootstrap/js/bootstrap.min.js"></script>
         <script src="lib/jquery-1.8.2.min.js"></script>
+        <script src="lib/knockout-2.1.0.js"></script>
         <script src="lib/pdf.js"></script>
     </head>
     <body data-view-id="{{.ViewID}}">
+
+        <div class="row">
+            <div class="span10">
+                <canvas id="pdf-canvas"></canvas>
+            </div>
+            <div id="tweets" class="well span2" data-bind="foreach: $data">
+                <div class="alert alert-block alert-info">
+                    <button
+                        type="button"
+                        class="close"
+                        data-bind="click: $parent.delete($data)">
+                        ×
+                    </button>
+                    <div class="container pull-left">
+                        <!-- profile image -->
+                        <img
+                            data-bind="attr:{src: user.profile_image_url}"
+                            class="img-rounded">
+
+                        <div class="container">
+                            <h4 data-bind="text: user.screen_name">
+                                User Name
+                            </h4>
+                            <p data-bind="text: text">
+                                Tweet contents
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script data-main="js/view" src="lib/require.js"></script>
     </body>
